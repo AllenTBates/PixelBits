@@ -4,44 +4,29 @@ using System.Collections;
 public class CameraFollow : MonoBehaviour
 {
 
-    public Transform target;
-    public float speed;
-    
-    Vector3 offset = new Vector3(0,6,-2);
-    CharacterController charController;
-    
-
-    void Start()
-    {
-        SetCameraTarget(target);
-    }
-
-    void SetCameraTarget(Transform t)
-    {
-        target = t;
-    }
+    private bool isOrtho = false;
+    public GameObject player;
 
     void Update()
     {
+        //Camera.main.transform.rotation = Quaternion.Euler(new Vector3(-(Input.mousePosition.y)/50f, Input.mousePosition.x/50f, 0));
 
-        testOne();
+        if (isOrtho)
+        {
+            Camera.main.transform.position = new Vector3(player.transform.position.x - 10.0f, player.transform.position.y, player.transform.position.z + 5.0f);
+            Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0, 90f, 0));
 
+            if (Input.GetKeyDown(KeyCode.O))
+                isOrtho = false;
+
+        }
+        else
+        {
+            //Press "O" to go into Orthographic View
+            if (Input.GetKeyDown(KeyCode.O))
+                isOrtho = true;
+        }
+        //Camera.main.transform.LookAt(player.transform);
     }
-
-    void testOne()
-    {
-        transform.position = target.transform.position + offset;
-        //transform.rotation = Quaternion.RotateTowards(transform.rotation, target.rotation, speed);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, Time.deltaTime * speed);
-        //Vector3 targetPosition = playerPos.TransformPoint(new Vector3(horizontalBuffer, followDistance, verticalBuffer));
-        //transform.position = Vector3.SmoothDamp(transform.position, playerPos.position, ref velocity, smoothTime);
-    }
-
-    void testTwo()
-    {
-
-    }
-
-    
 
 }
